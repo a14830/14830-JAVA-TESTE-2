@@ -1,32 +1,25 @@
-public class Cliente {
-    
-    public int id;
 
-    public String nome;
-
-    public String email;
-
-    public String telefone;
+USE appdb;
 
 
-    public Cliente(int id, String nome, String email, String telefone) {
+/* DROP TABLE IF EXISTS `clientes`;*/
 
-        this.id = id;
+CREATE TABLE `clientes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nif` varchar(15) NOT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `telefone` varchar(20) DEFAULT NULL,
+  `pais` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-        this.nome = nome;
-
-        this.email = email;
-
-        this.telefone = telefone;
-
-    }
 
 
-    @Override
 
-    public String toString() {
+/* LOCK TABLES `clientes` WRITE; */
+/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+/* INSERT INTO `clientes` VALUES (1,'','Rodrigo','abc@sapo.pt','123456789'),(2,'','Luis','abc@lixo.pt','123456'); */
 
-        return nome;
+/* UNLOCK TABLES;*/
 
-    }
-}
