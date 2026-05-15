@@ -709,7 +709,7 @@ public class App {
                     html.append("<td>");
                     html.append("<a href='/editar?id=").append(id).append("'>Editar</a>");
                     html.append("<a href='/apagar?id=").append(id)
-                        .append("' onclick=\"return confirm('Eliminar cliente?')\">Apagar</a>");
+                        .append("' onclick=\"return confirm('Eliminar animal?')\">Apagar</a>");
                     html.append("</td>");
 
                     html.append("</tr>");
@@ -756,6 +756,7 @@ public class App {
                 <a href='/animais'>← Voltar à lista</a><br><br>
 
                 <form method='POST' action='/guardar'>
+
                     numeroCA:
                     <input name='numeroCA' required>
 
@@ -922,7 +923,7 @@ public class App {
                     </head>
                     <body>
 
-                    <h2>Editar Cliente</h2>
+                    <h2>Editar animal</h2>
 
                     <a href='/animais'>« Voltar</a><br><br>
 
@@ -1021,7 +1022,7 @@ public class App {
                 con.close();
 
                 // Redirect (melhor UX)
-                exchange.getResponseHeaders().add("Location", "/clientes");
+                exchange.getResponseHeaders().add("Location", "/animais");
                 exchange.sendResponseHeaders(302, -1);
                 exchange.close();
                 return;
@@ -1033,7 +1034,7 @@ public class App {
                     <html>
                     <body>
                     <h2>!Erro ao atualizar animal</h2>
-                    <a href='/clientes'>Voltar</a>
+                    <a href='/animais'>Voltar</a>
                     </body>
                     </html>
                 """;
