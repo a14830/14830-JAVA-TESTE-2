@@ -3,6 +3,6 @@
         "src"
     ],
     "java.project.referencedLibraries": [
-        "lib/mysql-connector-j-9.6.0.jar"
+        "/workspaces/14830-JAVA-TESTE-2/lib/mysql-connector-j-9.6.0.jar"
     ]
 }

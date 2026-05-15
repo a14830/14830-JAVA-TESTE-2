@@ -647,9 +647,12 @@ public class App {
 
 
 
-/* 
 
-              //// LISTA
+
+
+
+
+        //// LISTA
         server.createContext("/animais", exchange -> {
 
             StringBuilder html = new StringBuilder();
@@ -667,14 +670,14 @@ public class App {
                     </head>
                     <body>
                     <h2>Lista de Animais</h2>
-                    <a href='/novo'>+ Novo Cliente</a><br><br>
+                    <a href='/novo'>+ Novo Animal</a><br><br>
 
                     <table>
                         <tr>
                             <th>ID</th>
-                            <th>numeroCA</th>
-                            <th>nomeAnimal</th>
-                            <th>dataNascimento</th>
+                            <th>NumeroCA</th>
+                            <th>NomeAnimal</th>
+                            <th>DataNascimento</th>
                             <th>Ações</th>
                         </tr>
                 """);             
@@ -688,11 +691,12 @@ public class App {
 
             try {
                 Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery("SELECT * FROM clientes");
+                ResultSet rs = st.executeQuery("SELECT * FROM animais");
 
                 while (rs.next()) {
+                  
                     int id = rs.getInt("id");
-                    String numeroCA = rs.getString("numeroCA");
+                    String numeroCA = rs.getString("numeroCA");  
                     String nomeAnimal = rs.getString("nomeAnimal");
                     String dataNascimento = rs.getString("dataNascimento");
 
@@ -705,7 +709,7 @@ public class App {
                     html.append("<td>");
                     html.append("<a href='/editar?id=").append(id).append("'>Editar</a>");
                     html.append("<a href='/apagar?id=").append(id)
-                        .append("' onclick=\"return confirm('Eliminar Animal?')\">Apagar</a>");
+                        .append("' onclick=\"return confirm('Eliminar cliente?')\">Apagar</a>");
                     html.append("</td>");
 
                     html.append("</tr>");
@@ -747,12 +751,11 @@ public class App {
                 </head>
                 <body>
 
-                <h2>Novo Cliente</h2>
+                <h2>Novo animal</h2>
 
-                <a href='/clientes'>← Voltar à lista</a><br><br>
+                <a href='/animais'>← Voltar à lista</a><br><br>
 
                 <form method='POST' action='/guardar'>
-
                     numeroCA:
                     <input name='numeroCA' required>
 
@@ -803,7 +806,8 @@ public class App {
                         String value = java.net.URLDecoder.decode(kv[1], "UTF-8");
 
                         switch (key) {
-                            case "numeroCA": numeroCA = value; break;
+
+                            case "numeroCA": numeroCA = value; break;                            
                             case "nomeAnimal": nomeAnimal = value; break;
                             case "dataNascimento": dataNascimento = value; break;
                         }
@@ -816,7 +820,7 @@ public class App {
                     throw new Exception("Ligação à BD falhou!");
                 }
 
-                String sql = "INSERT INTO clientes(numeroCA,nomeAnimal,dataNascimento) VALUES (?,?,?)";
+                String sql = "INSERT INTO animais(numeroCA,nomeAnimal,dataNascimento) VALUES (?,?,?)";
                 PreparedStatement ps = con.prepareStatement(sql);
 
                 ps.setString(1, numeroCA);
@@ -840,10 +844,10 @@ public class App {
                     </head>
                     <body>
 
-                    <h2>:-) Cliente guardado com sucesso!</h2>
+                    <h2>:-) Animal guardado com sucesso!</h2>
 
-                    <a href='/clientes'>Ver lista</a><br><br>
-                    <a href='/novo'>Inserir novo Animal</a>
+                    <a href='/animais'>Ver lista</a><br><br>
+                    <a href='/novo'>Inserir novo animal</a>
 
                     </body>
                     </html>
@@ -893,17 +897,16 @@ public class App {
                     throw new Exception("Ligação à BD falhou!");
                 }
 
-                String sql = "SELECT * FROM clientes WHERE id=?";
+                String sql = "SELECT * FROM animais WHERE id=?";
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.setInt(1, id);
 
                 ResultSet rs = ps.executeQuery();
 
                 if (!rs.next()) {
-                    throw new Exception("Cliente não encontrado");
+                    throw new Exception("Animal não encontrado");
                 }
-
-                String numeroCa = rs.getString("numeroCa");
+                String numeroCA = rs.getString("numeroCA");
                 String nomeAnimal = rs.getString("nomeAnimal");
                 String dataNascimento = rs.getString("dataNascimento");
 
@@ -921,16 +924,16 @@ public class App {
 
                     <h2>Editar Cliente</h2>
 
-                    <a href='/animal'>« Voltar</a><br><br>
+                    <a href='/animais'>« Voltar</a><br><br>
 
                     <form method='POST' action='/atualizar'>
                 """);
 
                 html.append("<input type='hidden' name='id' value='").append(id).append("'>");
 
-                html.append("numeroCa:<input name='numeroCa' value='").append(numeroCa).append("' required>");
+                html.append("NumeroCA:<input name='numeroCA' value='").append(numeroCA).append("' required>");
                 html.append("nomeAnimal:<input name='nomeAnimal' value='").append(nomeAnimal).append("' required>");
-                html.append("dataNascimento:<input name='dataNascimento' value='").append(dataNascimento).append("'>");
+                html.append("dataNascimento:<input name='dataNascimento' value='").append(dataNascimento).append("' required>");
 
                 html.append("""
                     <button type='submit'>Atualizar</button>
@@ -950,8 +953,8 @@ public class App {
                 html.append("""
                     <html>
                     <body>
-                    <h2>!Erro ao carregar cliente</h2>
-                    <a href='/clientes'>Voltar</a>
+                    <h2>!Erro ao carregar animal</h2>
+                    <a href='/animais'>Voltar</a>
                     </body>
                     </html>
                 """);
@@ -980,7 +983,6 @@ public class App {
                 String numeroCA = "";
                 String nomeAnimal = "";
                 String dataNascimento = "";
-
                 for (String p : params) {
                     String[] kv = p.split("=");
 
@@ -990,9 +992,9 @@ public class App {
 
                         switch (key) {
                             case "id": idStr = value; break;
-                            case "numeroCA": numeroCA = value; break;
+                            case "numeroCA": numeroCA = value; break;                            
                             case "nomeAnimal": nomeAnimal = value; break;
-                            case "dataNascimento": dataNascimento = value; break;                         
+                            case "dataNascimento": dataNascimento = value; break;                          
                         }
                     }
                 }
@@ -1005,12 +1007,12 @@ public class App {
                     throw new Exception("Ligação à BD falhou!");
                 }
 
-                String sql = "UPDATE clientes SET nome=?, email=?, telefone=? WHERE id=?";
+                String sql = "UPDATE animais SET numeroCA=?, nomeAnimal=?, dataNascimento=? WHERE id=?";
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                ps.setString(1, numeroCA);
-                ps.setString(2, nomeAnimal);
-                ps.setString(3, dataNascimento);
+                ps.setString(1, numeroCA);                
+                ps.setString(1, nomeAnimal);
+                ps.setString(2, dataNascimento);
                 ps.setInt(4, id);
 
                 ps.executeUpdate();
@@ -1019,7 +1021,7 @@ public class App {
                 con.close();
 
                 // Redirect (melhor UX)
-                exchange.getResponseHeaders().add("Location", "/animais");
+                exchange.getResponseHeaders().add("Location", "/clientes");
                 exchange.sendResponseHeaders(302, -1);
                 exchange.close();
                 return;
@@ -1063,7 +1065,7 @@ public class App {
                     throw new Exception("Ligação à BD falhou!");
                 }
 
-                String sql = "DELETE FROM clientes WHERE id=?";
+                String sql = "DELETE FROM animais WHERE id=?";
                 PreparedStatement ps = con.prepareStatement(sql);
 
                 ps.setInt(1, id);
@@ -1088,12 +1090,12 @@ public class App {
                 if (rows > 0) {
                     html.append("""
                         <h2>Animal apagado com sucesso!</h2>
-                        <a href='/animal'>Voltar à lista</a>
+                        <a href='/animais'>Voltar à lista</a>
                     """);
                 } else {
                     html.append("""
-                        <h2>! Animal não encontrado!</h2>
-                        <a href='/clientes'>Voltar</a>
+                        <h2>! Animais não encontrado!</h2>
+                        <a href='/animais'>Voltar</a>
                     """);
                 }
 
@@ -1113,7 +1115,7 @@ public class App {
                     <body>
 
                     <h2>!!! Erro ao apagar animal!</h2>
-                    <a href='/clientes'>Voltar</a>
+                    <a href='/animais'>Voltar</a>
 
                     </body>
                     </html>
@@ -1125,7 +1127,6 @@ public class App {
             exchange.getResponseBody().write(html.toString().getBytes());
             exchange.close();
         });           
-        
       
         
 
@@ -1135,7 +1136,6 @@ public class App {
 
 
 
-*/
 
         /**
          * 
